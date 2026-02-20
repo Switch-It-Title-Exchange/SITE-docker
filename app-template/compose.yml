@@ -1,0 +1,30 @@
+# /docker/templates/app-template.yml
+services:
+  app_name:
+    container_name: app_name
+    image: vendor/image:latest
+    restart: unless-stopped
+    volumes:
+      - ${APPS_DATA}/app_name/config:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    env_file:
+      - /docker/.env
+    # --- Health Check for Beszel ---
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    # --- Robustness Extras ---
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

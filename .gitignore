@@ -1,0 +1,11 @@
+# Ignore the master secrets file
+.env
+
+# Ignore all actual data and config subfolders
+**/config/
+**/data/
+**/db/
+**/.env  # just in case you have local ones
+
+# Keep the compose files!
+!**/docker-compose.yml

@@ -1,0 +1,32 @@
+services:
+  speedtest:
+    container_name: openspeedtest
+    image: openspeedtest/latest
+    restart: unless-stopped
+    ports:
+      - "85:3000" # HTTP: Local IP:85 -> Container:3000
+      - "455:3001" # HTTPS: Local IP:455 -> Container:3001
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    # Reference your global .env for consistency
+    env_file:
+      - /docker/.env
+    # --- Health Check for Beszel ---
+    healthcheck:
+      # MUST hit port 3000 inside the container, not 8080
+      test: [ "CMD-SHELL", "timeout 2s bash -c ':> /dev/tcp/127.0.0.1/3000' || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 128M # Plenty for a speed test tool
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

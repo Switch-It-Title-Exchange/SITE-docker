@@ -1,0 +1,126 @@
+services:
+  # -------------------------------------------------------
+  # SERVICE 1: NGINX PROXY MANAGER (The Gateway)
+  # Handles incoming web traffic (Port 80/443)
+  # -------------------------------------------------------
+  npm-work:
+    container_name: npm-work
+    image: "jc21/nginx-proxy-manager:latest"
+    restart: always
+    ports:
+      - "80:80" # Public HTTP (Required for web)
+      - "443:443" # Public HTTPS (Required for SSL)
+      - "81:81" # NPM Admin Dashboard (http://ip:81)
+    volumes:
+      - ${NETWORK_PATH}/npm/data:/data
+
+      - ${NETWORK_PATH}/npm/letsencrypt:/etc/letsencrypt
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    env_file:
+      - /docker/.env
+    networks:
+      - proxy-net
+      - tunnel-net
+    # --- Health Check for Beszel ---
+    healthcheck:
+      # This checks if port 81 is accepting connections without needing curl
+      test:
+        ["CMD-SHELL", "timeout 1s bash -c ':> /dev/tcp/127.0.0.1/81' || exit 1"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # -------------------------------------------------------
+  # SERVICE 2: ADGUARD HOME (The DNS Server)
+  # Handles DNS queries (Port 53) & Ad Blocking
+  # -------------------------------------------------------
+  adguard-work:
+    container_name: adguard-work
+    image: adguard/adguardhome:latest
+    restart: always
+    ports:
+      - "53:53/tcp" # DNS TCP
+      - "53:53/udp" # DNS UDP
+      - "3000:3000/tcp" # Initial Setup Wizard
+      # We map Host Port 8080 to Container Port 80 to avoid conflict with NPM
+      - "8080:80/tcp"
+    volumes:
+      - ${NETWORK_PATH}/adguard/work:/opt/adguardhome/work
+      - ${NETWORK_PATH}/adguard/conf:/opt/adguardhome/conf
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    env_file:
+      - /docker/.env
+    networks:
+      - proxy-net
+    # --- Health Check for Beszel ---
+    healthcheck:
+      # This asks the container to resolve 'localhost' using its own DNS service
+      test: ["CMD-SHELL", "nslookup localhost 127.0.0.1 || exit 1"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    cap_add:
+      - NET_ADMIN # Required for DNS to function properly
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    env_file:
+      - /docker/.env
+    networks:
+      - tunnel-net
+    # --- Health Check for Beszel ---
+    healthcheck:
+      # This checks the internal readiness endpoint provided by cloudflared
+      test: ["CMD", "cloudflared", "tunnel", "info"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    # We add '--metrics localhost:2000' so the health check has something to poke
+    command: tunnel --no-autoupdate run --metrics localhost:2000
+    # Cloudflared is tiny; it rarely needs more than 128MB
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  proxy-net:
+    external: true
+  tunnel-net:
+    external: true

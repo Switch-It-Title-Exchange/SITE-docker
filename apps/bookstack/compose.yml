@@ -1,0 +1,83 @@
+services:
+  bookstack_db:
+    container_name: bookstack_db
+    image: lscr.io/linuxserver/mariadb:latest
+    restart: unless-stopped
+    volumes:
+      - ${APPS_PATH}/bookstack/bookstack_db_data:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${BOOKSTACK_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${BOOKSTACK_DB_NAME}
+      - MYSQL_USER=${BOOKSTACK_DB_USER}
+      - MYSQL_PASSWORD=${BOOKSTACK_DB_PASS}
+    env_file:
+      - /docker/.env
+    networks:
+      - bookstack_db_net
+    healthcheck:
+      # LinuxServer MariaDB has healthcheck tools built-in
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  bookstack:
+    container_name: bookstack
+    image: lscr.io/linuxserver/bookstack:latest
+    restart: unless-stopped
+    depends_on:
+      bookstack_db:
+        condition: service_healthy # Wait for DB to be READY, not just started
+    volumes:
+      - ${APPS_PATH}/bookstack/bookstack_app_data:/config
+      - ${APPS_PATH}/bookstack/public/uploads:/config/www/uploads
+      - ${APPS_PATH}/bookstack/public/images:/config/www/images
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - APP_URL=https://wiki.${BASE_DOMAIN}
+      - APP_KEY=${BOOKSTACK_APP_KEY}
+      - DB_HOST=bookstack_db
+      - DB_PORT=3306
+      - DB_USERNAME=${BOOKSTACK_DB_USER}
+      - DB_PASSWORD=${BOOKSTACK_DB_PASS}
+      - DB_DATABASE=${BOOKSTACK_DB_NAME}
+    env_file:
+      - /docker/.env
+
+    networks:
+      - proxy-net
+      - tunnel-net
+      - bookstack_db_net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:80/" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  bookstack_db_net:
+    driver: bridge
+  proxy-net:
+    external: true
+  tunnel-net:
+    external: true

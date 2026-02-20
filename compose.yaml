@@ -1,0 +1,24 @@
+name: SITE-Docker
+
+networks:
+  proxy-net:
+    name: proxy-net
+    driver: bridge
+  tunnel-net:
+    name: tunnel-net
+    driver: bridge
+
+include:
+  # --- Network ---
+  - path: ${NETWORK_PATH:?err}/compose.yml
+
+  # --- Homepage ---
+  - path: ${HOME_PATH:?err}/compose.yml
+
+  # --- Wiki ---
+  - path: ${APP_PATH:?err}/bookstack/compose.yml
+
+  # --- Other Apps ---
+  - path: ${APP_PATH:?err}/speedtest/compose.yml
+  - path: ${APP_PATH:?err}/twenty/compose.yml
+  - path: ${APP_PATH:?err}/beszel/compose.yml

@@ -1,0 +1,24 @@
+# --- home.yml ---
+services:
+  homarr-SITE:
+    container_name: homarr-SITE
+    image: ghcr.io/homarr-labs/homarr:latest
+    restart: unless-stopped
+    ports:
+      - "7575:7575"
+    volumes:
+      - .configs/homarr/appdata:/appdata
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - SECRET_ENCRYPTION_KEY=${HOMARR_ENCRYPTION_KEY}
+    networks:
+      - proxy-net
+      - tunnel-net
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    group_add:
+      - "989"
