@@ -19,6 +19,12 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY}}
           statedir: /tmp/tailscale
           tags: tag:github-runner
+          ping: 100.123.210.84
+
+      - name: Network Debug
+        run: |
+          tailscale status
+          tailscale ping -c 3 100.123.210.84
 
       # 2. Deploy via SSH using the Tailscale IP
       - name: Deploy to Server via SSH
@@ -28,6 +34,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
+          timeout: 60s
           script: |
             cd /test/logs
             echo "Deploying SITE-docker..."
