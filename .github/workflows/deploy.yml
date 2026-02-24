@@ -21,10 +21,6 @@ jobs:
           tags: tag:github-runner
           ping: 100.123.210.84
 
-      - name: Network Debug
-        run: |
-          tailscale status
-          tailscale ping -c 3 100.123.210.84
 
       # 2. Deploy via SSH using the Tailscale IP
       - name: Deploy to Server via SSH
