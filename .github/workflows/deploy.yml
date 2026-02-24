@@ -27,7 +27,8 @@ jobs:
           host: 100.123.210.84 # Your Tailscale IP
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PRIVATE_KEY }}
-          script:
+          port: 22
+          script: |
             cd /test/logs
             echo "Deploying SITE-docker..."
             echo "Test Test Test" > test.txt
