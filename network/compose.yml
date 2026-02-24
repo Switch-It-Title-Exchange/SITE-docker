@@ -13,7 +13,6 @@ services:
       - "81:81" # NPM Admin Dashboard (http://ip:81)
     volumes:
       - ${NETWORK_PATH}/npm/data:/data
-
       - ${NETWORK_PATH}/npm/letsencrypt:/etc/letsencrypt
     environment:
       - PUID=${PUID}
@@ -27,8 +26,7 @@ services:
     # --- Health Check for Beszel ---
     healthcheck:
       # This checks if port 81 is accepting connections without needing curl
-      test:
-        ["CMD-SHELL", "timeout 1s bash -c ':> /dev/tcp/127.0.0.1/81' || exit 1"]
+      test: [ "CMD-SHELL", "timeout 1s bash -c ':> /dev/tcp/127.0.0.1/81' || exit 1" ]
       interval: 1m
       timeout: 10s
       retries: 3
@@ -71,7 +69,7 @@ services:
     # --- Health Check for Beszel ---
     healthcheck:
       # This asks the container to resolve 'localhost' using its own DNS service
-      test: ["CMD-SHELL", "nslookup localhost 127.0.0.1 || exit 1"]
+      test: [ "CMD-SHELL", "nslookup localhost 127.0.0.1 || exit 1" ]
       interval: 1m
       timeout: 10s
       retries: 3
@@ -101,7 +99,7 @@ services:
     # --- Health Check for Beszel ---
     healthcheck:
       # This checks the internal readiness endpoint provided by cloudflared
-      test: ["CMD", "cloudflared", "tunnel", "info"]
+      test: [ "CMD", "cloudflared", "tunnel", "info" ]
       interval: 1m
       timeout: 10s
       retries: 3
