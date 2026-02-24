@@ -1,11 +1,20 @@
-# Ignore the master secrets file
+# --- Secrets and Configs ---
 .env
+*.env
+secrets/
 
-# Ignore all actual data and config subfolders
-**/config/
-**/data/
-**/db/
-**/.env  # just in case you have local ones
+# --- Application Data (The heavy/private stuff) ---
+# This ignores all subfolders named 'db', 'data', or 'storage' 
+# inside your apps directory.
+apps/**/db/
+apps/**/data/
+apps/**/storage/
+apps/**/appdata/
+apps/**/config/
+apps/**/letsencrypt/
 
-# Keep the compose files!
-!**/docker-compose.yml
+# --- OS Junk ---
+.DS_Store
+thumbs.db
+.idea/
+.vscode/

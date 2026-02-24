@@ -1,0 +1,32 @@
+name: Deploy SITE-docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Connect the GitHub Runner to your Tailnet
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
+
+      # 2. Deploy via SSH using the Tailscale IP
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 100.123.210.84 # Your Tailscale IP
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /docker
+            git pull origin main
+            docker compose up -d --remove-orphans
