@@ -32,6 +32,6 @@ jobs:
           port: 22
           timeout: 60s
           script: |
-            cd /test/logs
+            cd /test/
             echo "Deploying SITE-docker..."
-            echo "Test Test Test" > test.txt
+            echo "$(date) - A sever Push has been detected and compose files would now be updated." > log.txt
