@@ -27,6 +27,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /docker
-            git pull origin main
-            docker compose up -d --remove-orphans
+            cd /test/logs
+            echo "Deploying SITE-docker..."
+            cat test.txt # Just to verify we can read files on the server
