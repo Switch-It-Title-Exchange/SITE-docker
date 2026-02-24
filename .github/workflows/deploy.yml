@@ -34,4 +34,4 @@ jobs:
           script: |
             cd test/
             echo "Deploying SITE-docker..."
-            echo "$(date) - A sever Push has been detected and compose files would now be updated." > log.txt
+            echo "$(date) - A sever Push has been detected and compose files would now be updated." >> log.txt
