@@ -22,12 +22,12 @@ jobs:
 
       # 2. Deploy via SSH using the Tailscale IP
       - name: Deploy to Server via SSH
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: 100.123.210.84 # Your Tailscale IP
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /test/logs
             echo "Deploying SITE-docker..."
-            cat test.txt # Just to verify we can read files on the server
+            echo "Test Test Test" > test.txt
