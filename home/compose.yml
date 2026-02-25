@@ -14,17 +14,19 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - SECRET_ENCRYPTION_KEY=${HOMARR_ENCRYPTION_KEY}
+      - DOCKER_GID=989
     env_file: ../.env
     networks:
       - proxy-net
       - tunnel-net
     # --- Health Check for Beszel ---
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:7575/" ]
-      interval: 1m
+      # We check the login page or main index instead of the API
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:7575/ || exit 1" ]
+      interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 30s
+      retries: 5
+      start_period: 45s
     deploy:
       resources:
         limits:

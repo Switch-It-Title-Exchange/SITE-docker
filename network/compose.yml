@@ -98,14 +98,13 @@ services:
       - tunnel-net
     # --- Health Check for Beszel ---
     healthcheck:
-      # This checks the internal readiness endpoint provided by cloudflared
-      test: [ "CMD", "cloudflared", "tunnel", "info" ]
-      interval: 1m
-      timeout: 10s
+      test: [ "CMD", "cloudflared", "--version" ]
+      interval: 30s
+      timeout: 5s
       retries: 3
-      start_period: 20s
+      start_period: 10s
     # We add '--metrics localhost:2000' so the health check has something to poke
-    command: tunnel --no-autoupdate run localhost:2000
+    command: tunnel --metrics 0.0.0.0:2000 run
     # Cloudflared is tiny; it rarely needs more than 128MB
     deploy:
       resources:
