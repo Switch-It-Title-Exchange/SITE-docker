@@ -15,6 +15,7 @@ services:
       - PGID=${PGID}
       - SECRET_ENCRYPTION_KEY=${HOMARR_ENCRYPTION_KEY}
       - DOCKER_GID=989
+      - DOCKER_HOST=unix:///var/run/docker.sock
     env_file: ../.env
     networks:
       - proxy-net
