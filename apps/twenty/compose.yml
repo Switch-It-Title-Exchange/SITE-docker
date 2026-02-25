@@ -10,7 +10,7 @@ services:
     ports:
       - "3005:3000"
     volumes:
-      - ${APP_PATH}/twenty/data/storage:/app/packages/twenty-server/.local-storage
+      - ./twenty/data/storage:/app/packages/twenty-server/.local-storage
     environment:
       NODE_PORT: 3000
       PG_DATABASE_URL: postgres://${PG_DATABASE_USER:-postgres}:${PG_DATABASE_PASSWORD:-postgres}@${PG_DATABASE_HOST:-db}:${PG_DATABASE_PORT:-5432}/default
@@ -49,6 +49,8 @@ services:
       # EMAIL_SMTP_USER: ${EMAIL_SMTP_USER:-}
       # EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD:-}
 
+    env_file:
+      - ../../.env
     healthcheck:
       test: curl --fail http://localhost:3000/healthz
       interval: 5s
@@ -64,7 +66,7 @@ services:
       server:
         condition: service_healthy
     volumes:
-      - ${APP_PATH}/twenty/data/storage:/app/packages/twenty-server/.local-storage
+      - ./twenty/data/storage:/app/packages/twenty-server/.local-storage
     environment:
       PG_DATABASE_URL: postgres://${PG_DATABASE_USER:-postgres}:${PG_DATABASE_PASSWORD:-postgres}@${PG_DATABASE_HOST:-db}:${PG_DATABASE_PORT:-5432}/default
       SERVER_URL: http://${SERVER_IP_LOCAL}:3005
@@ -102,7 +104,8 @@ services:
       # EMAIL_SMTP_USER: ${EMAIL_SMTP_USER:-}
       # EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD:-}
 
-    env_file: /docker/.env
+    env_file:
+      - ../../.env
     healthcheck:
       # This checks if the 'node' process for the worker is actually running
       test: [ "CMD-SHELL", "pgrep -f 'node.*worker:prod' || exit 1" ]
@@ -116,12 +119,12 @@ services:
     image: postgres:16
     restart: unless-stopped
     volumes:
-      - ${APP_PATH}/twenty/data/db:/var/lib/postgresql/data
+      - ./twenty/data/db:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${PG_DATABASE_NAME:-default}
       POSTGRES_PASSWORD: ${PG_DATABASE_PASSWORD:-postgres}
       POSTGRES_USER: ${PG_DATABASE_USER:-postgres}
-    env_file: /docker/.env
+    env_file: ../../.env
     healthcheck:
       test: pg_isready -U ${PG_DATABASE_USER:-postgres} -h localhost -d postgres
       interval: 5s

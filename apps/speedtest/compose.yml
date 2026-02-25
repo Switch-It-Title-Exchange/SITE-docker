@@ -12,7 +12,7 @@ services:
       - TZ=${TZ}
     # Reference your global .env for consistency
     env_file:
-      - /docker/.env
+      - ../../.env
     # --- Health Check for Beszel ---
     healthcheck:
       # MUST hit port 3000 inside the container, not 8080

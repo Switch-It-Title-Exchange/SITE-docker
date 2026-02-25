@@ -10,15 +10,15 @@ networks:
 
 include:
   # --- Network ---
-  - path: ${NETWORK_PATH:?err}/compose.yml
+  - network/compose.yml
 
   # --- Homepage ---
-  - path: ${HOME_PATH:?err}/compose.yml
+  - home/compose.yml
 
   # --- Wiki ---
-  - path: ${APP_PATH:?err}/bookstack/compose.yml
+  - apps/bookstack/compose.yml
 
   # --- Other Apps ---
-  - path: ${APP_PATH:?err}/speedtest/compose.yml
-  - path: ${APP_PATH:?err}/twenty/compose.yml
-  - path: ${APP_PATH:?err}/beszel/compose.yml
+  - apps/speedtest/compose.yml
+  #- path: ${APPS_PATH:?err}/twenty/compose.yml
+  - apps/beszel/compose.yml

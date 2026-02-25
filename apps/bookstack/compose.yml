@@ -4,7 +4,7 @@ services:
     image: lscr.io/linuxserver/mariadb:latest
     restart: unless-stopped
     volumes:
-      - ${APPS_PATH}/bookstack/data/bookstack_db_data:/config
+      - ./data/bookstack_db_data:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -14,7 +14,7 @@ services:
       - MYSQL_USER=${BOOKSTACK_DB_USER}
       - MYSQL_PASSWORD=${BOOKSTACK_DB_PASS}
     env_file:
-      - /docker/.env
+      - ../../.env
     networks:
       - bookstack_db_net
     healthcheck:
@@ -34,12 +34,10 @@ services:
     image: lscr.io/linuxserver/bookstack:latest
     restart: unless-stopped
     depends_on:
-      bookstack_db:
-        condition: service_healthy # Wait for DB to be READY, not just started
+      - bookstack_db
+
     volumes:
-      - ${APPS_PATH}/bookstack/data/bookstack_app_data:/config
-      - ${APPS_PATH}/bookstack/data/public/uploads:/config/www/uploads
-      - ${APPS_PATH}/bookstack/data/public/images:/config/www/images
+      - ./data/bookstack_app_data:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -52,7 +50,7 @@ services:
       - DB_PASSWORD=${BOOKSTACK_DB_PASS}
       - DB_DATABASE=${BOOKSTACK_DB_NAME}
     env_file:
-      - /docker/.env
+      - ../../.env
 
     networks:
       - proxy-net
@@ -78,6 +76,5 @@ networks:
   bookstack_db_net:
     driver: bridge
   proxy-net:
-    external: true
   tunnel-net:
-    external: true
+

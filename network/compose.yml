@@ -12,14 +12,14 @@ services:
       - "443:443" # Public HTTPS (Required for SSL)
       - "81:81" # NPM Admin Dashboard (http://ip:81)
     volumes:
-      - ${NETWORK_PATH}/npm/data/data:/data
-      - ${NETWORK_PATH}/npm/data/letsencrypt:/etc/letsencrypt
+      - ./npm/data/data:/data
+      - ./npm/data/letsencrypt:/etc/letsencrypt
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     env_file:
-      - /docker/.env
+      - ../.env
     networks:
       - proxy-net
       - tunnel-net
@@ -56,14 +56,14 @@ services:
       # We map Host Port 8080 to Container Port 80 to avoid conflict with NPM
       - "8080:80/tcp"
     volumes:
-      - ${NETWORK_PATH}/adguard/data/work:/opt/adguardhome/work
-      - ${NETWORK_PATH}/adguard/data/conf:/opt/adguardhome/conf
+      - ./adguard/data/work:/opt/adguardhome/work
+      - ./adguard/data/conf:/opt/adguardhome/conf
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     env_file:
-      - /docker/.env
+      - ../.env
     networks:
       - proxy-net
     # --- Health Check for Beszel ---
@@ -93,7 +93,7 @@ services:
     environment:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
     env_file:
-      - /docker/.env
+      - ../.env
     networks:
       - tunnel-net
     # --- Health Check for Beszel ---
@@ -105,7 +105,7 @@ services:
       retries: 3
       start_period: 20s
     # We add '--metrics localhost:2000' so the health check has something to poke
-    command: tunnel --no-autoupdate run --metrics localhost:2000
+    command: tunnel --no-autoupdate run localhost:2000
     # Cloudflared is tiny; it rarely needs more than 128MB
     deploy:
       resources:
@@ -119,6 +119,5 @@ services:
 
 networks:
   proxy-net:
-    external: true
   tunnel-net:
-    external: true
+

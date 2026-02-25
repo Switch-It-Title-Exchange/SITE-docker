@@ -6,9 +6,11 @@ services:
     ports:
       - 8090:8090
     volumes:
-      - ${APPS_PATH}/beszel/data/beszel_data:/beszel_data
+      - ./data/beszel_data:/beszel_data
     environment:
       - APP_URL=http://${SERVER_IP_LOCAL}:8090
+    env_file:
+      - ../../.env
 
   beszel-agent:
     container_name: beszel-agent
@@ -16,7 +18,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${APPS_PATH}/beszel/data/beszel_agent_data:/var/lib/beszel-agent
+      - ./data/beszel_agent_data:/var/lib/beszel-agent
       # monitor other disks / partitions by mounting a folder in /extra-filesystems
       # - /mnt/disk/.beszel:/extra-filesystems/sda1:ro
     environment:
@@ -24,4 +26,6 @@ services:
       KEY: ${API_KEY_BESZEL}
       TOKEN: 1f440fd2-462f-4dba-902e-5e7e5638fb40
       HUB_URL: http://${SERVER_IP_LOCAL}:8090
+    env_file:
+      - ../../.env
     network_mode: host

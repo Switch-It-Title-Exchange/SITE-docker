@@ -5,13 +5,13 @@ services:
     image: vendor/image:latest
     restart: unless-stopped
     volumes:
-      - ${APPS_DATA}/app_name/data/config:/config
+      - ./data/config:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     env_file:
-      - /docker/.env
+      - ../../.env
     # --- Health Check for Beszel ---
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/" ]

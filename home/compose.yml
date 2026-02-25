@@ -7,14 +7,14 @@ services:
     ports:
       - "7575:7575"
     volumes:
-      - ${HOME_DATA}/data/appdata:/appdata
+      - ./data/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
       - SECRET_ENCRYPTION_KEY=${HOMARR_ENCRYPTION_KEY}
-    env_file: /docker/.env
+    env_file: ../.env
     networks:
       - proxy-net
       - tunnel-net
