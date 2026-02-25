@@ -7,7 +7,7 @@ services:
     ports:
       - "7575:7575"
     volumes:
-      - ${HOME_DATA}/appdata:/appdata
+      - ${HOME_DATA}/data/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - TZ=${TZ}

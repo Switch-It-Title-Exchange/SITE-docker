@@ -10,7 +10,7 @@ services:
     ports:
       - "3005:3000"
     volumes:
-      - ${APP_PATH}/twenty/storage:/app/packages/twenty-server/.local-storage
+      - ${APP_PATH}/twenty/data/storage:/app/packages/twenty-server/.local-storage
     environment:
       NODE_PORT: 3000
       PG_DATABASE_URL: postgres://${PG_DATABASE_USER:-postgres}:${PG_DATABASE_PASSWORD:-postgres}@${PG_DATABASE_HOST:-db}:${PG_DATABASE_PORT:-5432}/default
@@ -64,7 +64,7 @@ services:
       server:
         condition: service_healthy
     volumes:
-      - ${APP_PATH}/twenty/storage:/app/packages/twenty-server/.local-storage
+      - ${APP_PATH}/twenty/data/storage:/app/packages/twenty-server/.local-storage
     environment:
       PG_DATABASE_URL: postgres://${PG_DATABASE_USER:-postgres}:${PG_DATABASE_PASSWORD:-postgres}@${PG_DATABASE_HOST:-db}:${PG_DATABASE_PORT:-5432}/default
       SERVER_URL: http://${SERVER_IP_LOCAL}:3005
@@ -116,7 +116,7 @@ services:
     image: postgres:16
     restart: unless-stopped
     volumes:
-      - ${APP_PATH}/twenty/db:/var/lib/postgresql/data
+      - ${APP_PATH}/twenty/data/db:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${PG_DATABASE_NAME:-default}
       POSTGRES_PASSWORD: ${PG_DATABASE_PASSWORD:-postgres}

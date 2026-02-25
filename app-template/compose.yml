@@ -5,7 +5,7 @@ services:
     image: vendor/image:latest
     restart: unless-stopped
     volumes:
-      - ${APPS_DATA}/app_name/config:/config
+      - ${APPS_DATA}/app_name/data/config:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

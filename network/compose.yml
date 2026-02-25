@@ -12,8 +12,8 @@ services:
       - "443:443" # Public HTTPS (Required for SSL)
       - "81:81" # NPM Admin Dashboard (http://ip:81)
     volumes:
-      - ${NETWORK_PATH}/npm/data:/data
-      - ${NETWORK_PATH}/npm/letsencrypt:/etc/letsencrypt
+      - ${NETWORK_PATH}/npm/data/data:/data
+      - ${NETWORK_PATH}/npm/data/letsencrypt:/etc/letsencrypt
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -56,8 +56,8 @@ services:
       # We map Host Port 8080 to Container Port 80 to avoid conflict with NPM
       - "8080:80/tcp"
     volumes:
-      - ${NETWORK_PATH}/adguard/work:/opt/adguardhome/work
-      - ${NETWORK_PATH}/adguard/conf:/opt/adguardhome/conf
+      - ${NETWORK_PATH}/adguard/data/work:/opt/adguardhome/work
+      - ${NETWORK_PATH}/adguard/data/conf:/opt/adguardhome/conf
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

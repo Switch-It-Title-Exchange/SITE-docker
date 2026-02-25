@@ -6,12 +6,7 @@ secrets/
 # --- Application Data (The heavy/private stuff) ---
 # This ignores all subfolders named 'db', 'data', or 'storage' 
 # inside your apps directory.
-apps/**/db/
-apps/**/data/
-apps/**/storage/
-apps/**/appdata/
-apps/**/config/
-apps/**/letsencrypt/
+**/data/
 
 # --- OS Junk ---
 .DS_Store

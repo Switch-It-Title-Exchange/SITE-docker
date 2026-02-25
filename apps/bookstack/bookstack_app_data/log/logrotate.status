@@ -1,7 +1,0 @@
-logrotate state -- version 2
-"/var/log/acpid.log" 2025-11-26-2:0:0
-"/var/log/php85/*.log" 2026-1-9-2:0:0
-"/config/log/nginx/access.log" 2026-2-15-2:0:0
-"/var/log/php84/*.log" 2025-11-26-2:0:0
-"/config/log/nginx/error.log" 2025-12-3-2:0:0
-"/config/log/php/error.log" 2026-2-15-2:0:0
