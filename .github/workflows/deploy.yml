@@ -31,7 +31,7 @@ jobs:
           port: 22
           timeout: 60s
           script: |
-            cd /docker/SITE-docker
+            cd docker/SITE-docker
             echo "Deploying SITE-docker..."
             # 1. Pull the latest code from GitHub
             git pull origin main
@@ -44,4 +44,5 @@ jobs:
             # 3. Prune the system to reclaim space
             # -f (force) skips the "Are you sure?" prompt
             docker system prune -f
+            cd
             echo "$(date) - A sever Push has been detected and compose files should have been updated." >> log.txt
