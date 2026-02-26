@@ -11,6 +11,8 @@ services:
       - APP_URL=http://${SERVER_IP_LOCAL}:8090
     env_file:
       - ../../.env
+    labels:
+      - autoxpose.enable=true # or 'auto' for automatic exposure
     healthcheck:
       # Calls the binary directly (no shell required)
       test: [ "CMD", "/beszel", "health", "--url", "http://localhost:8090" ]
