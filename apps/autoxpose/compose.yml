@@ -1,5 +1,6 @@
 services:
   autoxpose:
+    container_name: autoexpose
     image: mostafawahied/autoxpose:latest
     restart: unless-stopped
     ports:
