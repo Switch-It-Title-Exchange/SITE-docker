@@ -9,10 +9,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - SERVER_IP=${PUBLIC_IP}
-      - LAN_IP=${SERVER_LOCAL_IP}
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+      - LAN_IP=${SERVER_IP_LOCAL}
     env_file:
       - ../../.env
     # healthcheck:
