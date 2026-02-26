@@ -13,6 +13,8 @@ services:
     # Reference your global .env for consistency
     env_file:
       - ../../.env
+    labels:
+      - autoxpose.enable=true # or 'auto' for automatic exposure
     # --- Health Check for Beszel ---
     healthcheck:
       test: [ "CMD-SHELL", "nc -z localhost 3000 || exit 1" ] # Check if port 3000 is listening

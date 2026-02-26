@@ -34,7 +34,6 @@ services:
     restart: unless-stopped
     depends_on:
       - bookstack_db
-
     volumes:
       - ./data/bookstack_app_data:/config
     environment:
@@ -55,6 +54,8 @@ services:
       - proxy-net
       - tunnel-net
       - bookstack_db_net
+    labels:
+      - autoxpose.enable=auto # or 'auto' for automatic exposure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:80/" ]
       interval: 1m

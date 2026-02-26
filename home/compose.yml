@@ -20,6 +20,9 @@ services:
     networks:
       - proxy-net
       - tunnel-net
+    labels:
+      - autoxpose.enable=auto # or 'auto' for automatic exposure
+      - autoxpose.subdomain=
     # --- Health Check for Beszel ---
     healthcheck:
       # We check the login page or main index instead of the API
