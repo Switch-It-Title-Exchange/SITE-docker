@@ -9,8 +9,8 @@ services:
       - ./data:/app/packages/backend/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - SERVER_IP=${PUBLIC_IP}
-      - LAN_IP=${SERVER_IP_LOCAL}
+      - SERVER_IP= ${PUBLIC_IP}
+      - LAN_IP= ${SERVER_IP_LOCAL}
     env_file:
       - ../../.env
     # healthcheck:
