@@ -8,9 +8,6 @@ services:
     volumes:
       - ./data:/app/packages/backend/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - SERVER_IP= ${PUBLIC_IP}
-      - LAN_IP= ${SERVER_IP_LOCAL}
     env_file:
       - ../../.env
     # healthcheck:
@@ -22,9 +19,8 @@ services:
     #   resources:
     #     limits:
     #       memory: 512M
-    # logging:
-    #   driver: "json-file"
-    #   options:
-    #     max-size: "10m"
-    #     max-file: "3"
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
