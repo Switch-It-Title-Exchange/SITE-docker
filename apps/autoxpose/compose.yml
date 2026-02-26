@@ -1,0 +1,32 @@
+services:
+  autoxpose:
+    image: mostafawahied/autoxpose:latest
+    restart: unless-stopped
+    ports:
+      - '4949:3000'
+    volumes:
+      - ./data:/app/packages/backend/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - SERVER_IP=${PUBLIC_IP}
+      - LAN_IP=${SERVER_LOCAL_IP}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    env_file:
+      - ../../.env
+    # healthcheck:
+    #   test: [ "CMD", "curl", "-f", "http://localhost:8080/" ]
+    #   interval: 1m
+    #   timeout: 10s
+    #   retries: 3
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 512M
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"
+
