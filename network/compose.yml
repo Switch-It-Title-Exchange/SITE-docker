@@ -56,7 +56,7 @@ services:
     ports:
       - "53:53/tcp" # DNS TCP
       - "53:53/udp" # DNS UDP
-      - "3000:3000/tcp" # Initial Setup Wizard
+      #      - "3000:3000/tcp" # Initial Setup Wizard
       # We map Host Port 8080 to Container Port 80 to avoid conflict with NPM
       - "8080:80/tcp"
     volumes:
