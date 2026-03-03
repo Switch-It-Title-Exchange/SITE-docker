@@ -15,7 +15,7 @@ services:
       - ../../.env
     labels:
       - autoxpose.enable=true # or 'auto' for automatic exposure
-      - autoxpose.port=445
+      - autoxpose.port=455
       - autoxpose.subdomain=speedtest
 
     # --- Health Check for Beszel ---
