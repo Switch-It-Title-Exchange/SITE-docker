@@ -26,6 +26,7 @@ services:
     labels:
       - autoxpose.enable=auto # or 'auto' for automatic exposure
       - autoxpose.subdomain=npm
+      - autoxpose.port=81
     # --- Health Check for Beszel ---
     healthcheck:
       # This checks if port 81 is accepting connections without needing curl
@@ -72,6 +73,7 @@ services:
     labels:
       - autoxpose.enable=auto # or 'auto' for automatic exposure
       - autoxpose.subdomain=dns
+      - autoxpose.port=8080
     # --- Health Check for Beszel ---
     healthcheck:
       # This asks the container to resolve 'localhost' using its own DNS service
