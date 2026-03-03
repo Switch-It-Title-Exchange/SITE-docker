@@ -12,7 +12,7 @@ services:
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
-      - PGID=${PGID}
+      - PGID=989
       - SECRET_ENCRYPTION_KEY=${HOMARR_ENCRYPTION_KEY}
       - DOCKER_GID=989
       - DOCKER_HOST=unix:///var/run/docker.sock
