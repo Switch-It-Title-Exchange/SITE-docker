@@ -16,6 +16,8 @@ services:
     labels:
       - autoxpose.enable=true # or 'auto' for automatic exposure
       - autoxpose.port=445
+      - autoxpose.subdomain=speedtest
+
     # --- Health Check for Beszel ---
     healthcheck:
       test: [ "CMD-SHELL", "nc -z localhost 3000 || exit 1" ] # Check if port 3000 is listening
