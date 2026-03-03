@@ -22,3 +22,4 @@ include:
   - apps/speedtest/compose.yml
   #- path: ${APPS_PATH:?err}/twenty/compose.yml
   - apps/beszel/compose.yml
+  - apps/autoxpose/compose.yml
