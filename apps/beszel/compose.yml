@@ -34,7 +34,7 @@ services:
       LISTEN: 45876
       KEY: ${API_KEY_BESZEL}
       TOKEN: 1f440fd2-462f-4dba-902e-5e7e5638fb40
-      HUB_URL: https://beszel.${DOMAIN}
+      HUB_URL: http://${SERVER_IP_LOCAL}:8090
     env_file:
       - ../../.env
     healthcheck:
