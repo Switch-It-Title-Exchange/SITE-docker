@@ -1,0 +1,16 @@
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    volumes:
+      - ./vw-data:/data
+    environment:
+      - SIGNUPS_ALLOWED=true # Set to false after your 20 employees join
+      - ADMIN_TOKEN=change_this_to_a_long_random_string # Access /admin to manage users
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true

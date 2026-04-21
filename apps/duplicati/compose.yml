@@ -1,0 +1,15 @@
+services:
+  duplicati:
+    container_name: duplicati
+    image: lscr.io/linuxserver/duplicati:latest
+    restart: unless-stopped
+    ports:
+      - "8200:8200"
+    volumes:
+      - ./duplicati-config:/config
+      - ./backups:/backups # Where you want to store local backups
+      - /:/source:ro # This allows Duplicati to "see" your other app folders for backup
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York

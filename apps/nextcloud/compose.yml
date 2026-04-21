@@ -1,0 +1,17 @@
+services:
+  nextcloud:
+    container_name: nextcloud
+    image: nextcloud:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nextcloud_data:/var/www/html
+    environment:
+      - TRUSTED_PROXIES=192.168.2.0/24 # Adjust to your EdgeRouter subnet
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true
