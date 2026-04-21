@@ -10,7 +10,7 @@ services:
       - ./paperless-db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=paperless
-      - POSTGRES_USER=paperless
+      - POSTGRES_USER=paperless_user
       - POSTGRES_PASSWORD=paperless_secure_pass
 
   webserver:
