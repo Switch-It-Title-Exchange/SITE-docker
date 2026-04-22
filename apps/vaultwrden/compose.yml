@@ -13,8 +13,8 @@ services:
       # Access /admin to manage users
       #- ADMIN_TOKEN=change_this_to_a_long_random_string 
     networks:
-      - proxy-network
+      - proxy-net
 
 networks:
-  proxy-network:
+  proxy-net:
     external: true
