@@ -1,7 +1,9 @@
 services:
   broker:
     image: redis:latest
-    restart: unless-stopped - redis-data:/data
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
 
   db:
     image: postgres:latest
