@@ -3,17 +3,21 @@ services:
     image: redis:latest
     restart: unless-stopped
     volumes:
-      - redis-data:/data
+      - ./redis-data:/data
+    networks:
+      - paperless_db_net
 
   db:
     image: postgres:latest
     restart: unless-stopped
     volumes:
-      - ./paperless-db:/var/lib/postgresql/data
+      - ./paperless-db:/var/lib/postgresql # Added /data suffix
     environment:
       - POSTGRES_DB=paperless
       - POSTGRES_USER=paperless_user
       - POSTGRES_PASSWORD=paperless_secure_pass
+    networks:
+      - paperless_db_net
 
   webserver:
     container_name: paperless-ngx
@@ -28,13 +32,22 @@ services:
       - ./paperless-data:/usr/src/paperless/data
       - ./paperless-media:/usr/src/paperless/media
       - ./paperless-export:/usr/src/paperless/export
-      - ./paperless-consume:/usr/src/paperless/consume # Drag & drop scans here
+      - ./paperless-consume:/usr/src/paperless/consume
     environment:
       - PAPERLESS_REDIS=redis://broker:6379
       - PAPERLESS_DBHOST=db
+      - PAPERLESS_DBNAME=paperless
+      - PAPERLESS_DBUSER=paperless_user # Must match db service
+      - PAPERLESS_DBPASS=paperless_secure_pass # Must match db service
       - PAPERLESS_TIME_ZONE=America/New_York
       - PAPERLESS_OCR_LANGUAGE=eng
+    networks:
+      - proxy-net
+      - paperless_db_net
+    user: "1000:1000"
 
 networks:
-  proxy-network:
+  proxy-net:
     external: true
+  paperless_db_net:
+    internal: true

@@ -15,3 +15,18 @@ backups/
 thumbs.db
 .idea/
 .vscode/
+
+# --- paperless-ngx specific ---
+
+# Ignore the entire paperless-db directory, including any subdirectories or files within it.
+**/paperless-db/ 
+# Ignore the entire paperless-data directory, including any subdirectories or files within it.
+**/paperless-data/ 
+# Ignore the entire paperless-media directory, including any subdirectories or files within it.
+**/paperless-media/ 
+# Ignore the entire paperless-export directory, including any subdirectories or files within it.
+**/paperless-export/ 
+# Ignore the entire paperless-consume directory, including any subdirectories or files within it.
+**/paperless-consume/ 
+# Ignore the entire redis-data directory, including any subdirectories or files within it.
+**/redis-data/ 
