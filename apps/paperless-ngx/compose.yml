@@ -1,10 +1,10 @@
 services:
   broker:
-    image: redis:7
-    restart: unless-stopped
+    image: redis:latest
+    restart: unless-stopped - redis-data:/data
 
   db:
-    image: postgres:15
+    image: postgres:latest
     restart: unless-stopped
     volumes:
       - ./paperless-db:/var/lib/postgresql/data
