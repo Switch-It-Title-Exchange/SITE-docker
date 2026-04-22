@@ -12,6 +12,7 @@ services:
       - SIGNUPS_ALLOWED=true
       # Access /admin to manage users
       #- ADMIN_TOKEN=change_this_to_a_long_random_string 
+      - DOMAIN=https://vaultwrden.site-office.net
     networks:
       - proxy-net
     labels:
